@@ -7,11 +7,11 @@ use PDO;
 abstract class Database
 {
     protected static $user = 'root';
-    protected static $pass = 'root';
+    protected static $pass = '';
     protected static $port = '3306';
     protected static $type = 'mysql';
     protected static $host = 'localhost';
-    protected static $name = 'database';
+    protected static $name = 'evolutio';
 
     public static function make_connection()
     {
