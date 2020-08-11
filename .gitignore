@@ -3,3 +3,4 @@
 .vscode
 /vendor/
 /composer.lock
+/data/evolutio_*.sql
