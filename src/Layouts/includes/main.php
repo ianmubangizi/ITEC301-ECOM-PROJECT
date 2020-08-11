@@ -17,25 +17,25 @@
 
 <body class="toolbar-enabled">
 <?php
-include_once('includes/partials/auth-modal.php');
-include_once('includes/partials/quick-view.php');
-include_once('includes/partials/order-details.php');
-include_once('includes/partials/payment-modal.php');
-include_once('includes/header.php');
-include_once('includes/partials/alert.php');
-include_once('includes/partials/breadcrumb.php');
+include_once('partials/auth-modal.php');
+include_once('partials/quick-view.php');
+include_once('partials/order-details.php');
+include_once('partials/payment-modal.php');
+include_once('header.php');
+include_once('partials/alert.php');
+include_once('partials/breadcrumb.php');
 include_once($app->page->view);
-include_once('includes/partials/toast.php');
-include_once('includes/footer.php');
+include_once('partials/toast.php');
+include_once('footer.php');
 ?>
 <script src="/public/js/jquery.slim.min.js"></script>
 <script src="/public/js/bootstrap.bundle.min.js"></script>
 <script src="/public/js/file-input.min.js"></script>
 <script src="/public/js/simple-bar.min.js"></script>
 <script src="/public/js/tiny-slider.js"></script>
-<script src="/public/js/smooth-scroll.polyfills.min.js"></script>
 <script src="/public/js/ui-slider.min.js"></script>
 <script src="/public/js/drift.min.js"></script>
+<script src="/public/js/smooth-scroll.polyfills.min.js"></script>
 <script src="/public/js/functions.min.js"></script>
 </body>
 </html>
