@@ -4,19 +4,19 @@
 namespace Mubangizi\Layouts;
 
 
-class Toast
+class Toast extends Layout
 {
-    public $show, $title, $body, $status, $icon, $position, $params;
+    public $title, $body, $status, $icon, $position, $params;
 
-    public function __construct($title, $body, $show = true, $status = false, $icon = false, $position = false, $params = false)
+    public function __construct($title = false, $body = false, $show = false, $status = false, $icon = false, $position = false, $params = false)
     {
-        $this->show = $show;
-        $this->title = $title;
-        $this->body = $body;
-        $this->status = $status;
         $this->icon = $icon;
-        $this->position = $position;
+        $this->body = $body;
+        $this->title = $title;
+        $this->status = $status;
         $this->params = $params;
+        $this->position = $position;
+        parent::__construct($show);
     }
 
 }
