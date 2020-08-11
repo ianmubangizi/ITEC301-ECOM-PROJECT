@@ -9,7 +9,3 @@ Route::get('/page-not-found', '404');
 Route::set('/', 'index');
 Route::get('/about-us', 'about-us');
 Route::get('/contact-us', 'contact-us');
-
-// Shop
-Route::set('/shop-cart', 'cart', 'ShopController@cart');
-Route::set('/shop-products', 'shop', 'ShopController@index');
