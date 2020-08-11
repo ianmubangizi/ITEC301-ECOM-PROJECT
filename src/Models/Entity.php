@@ -26,11 +26,18 @@ abstract class Entity
         return !isset($id) && isset($this->id) ? $this->id : ($id ?: 0);
     }
 
-    /** @noinspection SqlResolve */
-    public function get_by_id($id)
+    /** @noinspection SqlResolve
+     * @return stdClass | bool
+     */
+    public function find_by_id($id)
     {
         $result = $this->query("SELECT * FROM $this->table WHERE id = $id;");
-        return isset($result[0]) ? $this->map($result[0]) : null;
+        return isset($result[0]) ? $result[0] : false;
+    }
+
+    public function get_by_id($id)
+    {
+        return $this->map($this->find_by_id($id));
     }
 
     public function get_all()

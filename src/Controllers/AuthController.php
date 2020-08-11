@@ -28,10 +28,11 @@ class AuthController extends Controller
                     $this->to('index', '?alert=sign-in-success');
                 }
             } else {
-                alert($request, 'danger',
-                    'check you\'re email and password',
+                alert(
                     'Invalid Login Credentials',
-                    'security-announcement'
+                    'check you\'re email and password',
+                    'security-announcement',
+                    'danger'
                 );
                 form_data($request, "login-form", array('email' => $email, 'password' => $password));
             }

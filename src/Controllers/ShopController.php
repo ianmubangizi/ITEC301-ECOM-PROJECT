@@ -15,21 +15,13 @@ class ShopController extends Controller
         render($this->page, $view, $request);
     }
 
-    public function cart($view, $request)
+    public function order($view, $request)
     {
-        breadcrumbs($request, "Your Shopping cart", array(
-                crumb('Home'), crumb('Shop', 'shop'))
-        );
-        render($this->page, $view, $request);
-    }
-
-    public function checkout($view, $request)
-    {
-        breadcrumbs($request, "Checkout", array(
+        $view = str_replace('order-', '', $view);
+        breadcrumbs($request, 'Order ' . ucfirst($view), array(
                 crumb('Home'),
-                crumb('Shop', 'shop'),
-                crumb('Cart', 'cart'))
+                crumb('Shop', 'shop'))
         );
-        render($this->page, $view, $request);
+        render($this->page, "Order\\$view", $request);
     }
 }

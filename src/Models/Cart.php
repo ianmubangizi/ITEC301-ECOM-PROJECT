@@ -19,7 +19,7 @@ class Cart extends Basket
         return $this->meta['total'];
     }
 
-    public function add_to_cart(Product $product)
+    public function add_item(Product $product)
     {
         if (isset($this->meta[$product->id])) {
             $this->meta[$product->id]['count'] += 1;

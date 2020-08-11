@@ -2,7 +2,11 @@
 
 namespace Mubangizi;
 
+use Braintree\Gateway;
+use Mubangizi\Layouts\Alert;
+use Mubangizi\Layouts\Toast;
 use Mubangizi\Models\Cart;
+use Mubangizi\Models\Product;
 use Mubangizi\Views\Page;
 
 class Application
@@ -11,6 +15,8 @@ class Application
     public $cart;
     public $site;
     public $page;
+    public $alert;
+    public $toast;
     public $router;
 
     public static $paths = array(
@@ -22,15 +28,27 @@ class Application
         'forms' => __DIR__ . '\Layouts\includes\partials\forms\\'
     );
 
+    public $gateway;
     private static $instances = array();
+
 
     protected function __construct()
     {
         session_start();
         $this->cart = new Cart;
-        $this->page = new Page(view('index'));
-        $this->site = "Evolutio";
+        $this->site = $_ENV['SITE_NAME'];
+        $this->alert = new Alert;
+        $this->toast = new Toast;
         $this->router = new Route;
+
+        $this->gateway = new Gateway([
+            'environment' => $_ENV['BT_ENVIRONMENT'],
+            'merchantId' => $_ENV['BT_MERCHANT_ID'],
+            'publicKey' => $_ENV['BT_PUBLIC_KEY'],
+            'privateKey' => $_ENV['BT_PRIVATE_KEY']
+        ]);
+
+        $this->page = new Page(view('index'));
     }
 
     protected function __clone()

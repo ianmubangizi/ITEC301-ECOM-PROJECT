@@ -46,19 +46,21 @@ class Controller
             switch ($request['params']['alert']) {
                 case 'sign-in-success':
                     if (get_user()->role !== ANONYMOUS) {
-                        $text = "Happy Shopping, " . get_user()->firstname;
-                        alert($request, 'success', $text,
+                        alert(
                             'Login Success',
-                            'thumb-up'
+                            "Happy Shopping, " . get_user()->firstname,
+                            'thumb-up',
+                            'success'
                         );
                     }
                     break;
                 case 'sign-out-success':
                     if (get_user()->role === ANONYMOUS) {
-                        alert($request, 'success',
+                        alert(
                             "Have a good",
                             'Sign out Success',
-                            'thumb-up'
+                            'thumb-up',
+                            'success'
                         );
                     }
                     break;

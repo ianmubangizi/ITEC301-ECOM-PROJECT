@@ -16,9 +16,13 @@
   },
   "require": {
     "ext-pdo": "*",
-    "ext-json": "*"
+    "ext-json": "*",
+    "ext-fileinfo": "*",
+    "vlucas/phpdotenv": "*",
+    "braintree/braintree_php": "*"
   },
   "require-dev": {
-    "phpunit/phpunit": "^9.2"
+    "ext-curl": "*",
+    "phpunit/phpunit": "*"
   }
 }

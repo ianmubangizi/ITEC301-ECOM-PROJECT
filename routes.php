@@ -4,7 +4,7 @@
 require_once('src/Routes/Auth.php');
 require_once('src/Routes/User.php');
 require_once('src/Routes/Index.php');
-require_once('src/Routes/Order.php');
+require_once('src/Routes/Shop.php');
 
 // Api Routes
 require_once('src/Routes/Api/Ajax.php');

@@ -2,6 +2,7 @@
 
 namespace Mubangizi\Models;
 
+use Exception;
 use stdClass;
 
 class Product extends Entity
@@ -23,25 +24,48 @@ class Product extends Entity
 
     public function get_url()
     {
-        return url_for('shop') . "?$this->inventory&product=$this->id";
+        return url_for('shop') . "?{$this->inventory->category}&product=$this->id";
+    }
+
+    public static function create($name, $sale, $image, $price, $details, $inventory)
+    {
+        try {
+            $result = (new Inventory)->get_by_id(empty($inventory) ? '-1' : $inventory);
+            if ($result) {
+                $result = (new Product)->insert(array(
+                    'name' => "'$name'",
+                    'sale' => empty($sale) ? 0 : $sale,
+                    'price' => $price,
+                    'image' => "'$image'",
+                    'details' => "'$details'",
+                    'inventory' => $result->id
+                ));
+            }
+        } catch (Exception $ex) {
+            return $ex->getMessage();
+        }
+        return $result;
     }
 
     public static function map(stdClass $product): Product
     {
         return new Product(
+            $product->id,
             $product->name,
             $product->sale,
             $product->price,
             $product->image,
             $product->details,
-            $product->inventory
+            (new Inventory)->get_by_id($product->inventory)
         );
     }
+
 
     /**
      * @return Product[]
      */
-    public function all()
+    public
+    function all()
     {
         return parent::all();
     }

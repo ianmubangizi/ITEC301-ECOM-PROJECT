@@ -1,5 +1,9 @@
 <?php
 
+use Mubangizi\Layouts\Alert;
+use Mubangizi\Layouts\Toast;
+use Mubangizi\Models\Inventory;
+use Mubangizi\Models\Product;
 use Mubangizi\Route;
 use Mubangizi\Views\Page;
 use Mubangizi\Models\User;
@@ -75,14 +79,14 @@ function clear_session()
     session_destroy();
 }
 
-function alert(&$request, $status, $text, $title = null, $icon = null)
+function alert($title, $text, $icon = false, $status = false)
 {
-    $request['alert'] = array(
-        'status' => $status,
-        'text' => $text,
-        'title' => $title,
-        'icon' => $icon,
-    );
+    Application::instance()->alert = new Alert($title, $text, 'show', $icon, $status);
+}
+
+function toast($title, $body, $status, $icon, $position, $params)
+{
+    Application::instance()->toast = new Toast($title, $body, 'show', $status, $icon, $position, $params);
 }
 
 function update_string($values, $length, $string = "")
@@ -149,22 +153,11 @@ function view($view, $path = false)
     return path_for($path ?: 'pages') . "$view.php";
 }
 
-function layouts($file, $path = "")
+function layouts($file, $path = false)
 {
-    switch ($path) {
-        case "forms":
-            $layout = path_for('forms') . $file;
-            break;
-        case "partials":
-            $layout = path_for('partials') . $file;
-            break;
-        case "includes":
-            $layout = path_for('includes') . $file;
-            break;
-        default:
-            $layout = path_for('layouts') . $file;
-            break;
-    }
+    $layout = $path
+        ? path_for($path) . $file
+        : path_for('layouts') . $file;
     return "$layout.php";
 }
 
@@ -234,8 +227,62 @@ function active_tab($name, $tab = false): string
     return ' ';
 }
 
+function rand_color($min = 0, $max = 0xFFFFFF)
+{
+    return sprintf('#%06X', mt_rand($min, $max));
+}
+
 function get_categories()
 {
     return Entity::get_all_from('Category');
 }
 
+function get_inventory()
+{
+    return (new Inventory())->all();
+}
+
+function get_products()
+{
+    return (new Product())->all();
+}
+
+
+function check_file_upload($file, $storage_path = '\\public\\img\\uploads\\', $file_ext = ['jpg' => 'image/jpeg', 'png' => 'image/png', 'gif' => 'image/gif'])
+{
+    try {
+        if (!isset($_FILES[$file]['error']) || is_array($_FILES[$file]['error'])) {
+            throw new RuntimeException('Invalid parameters.');
+        }
+
+        switch ($_FILES[$file]['error']) {
+            case UPLOAD_ERR_OK:
+                break;
+            case UPLOAD_ERR_NO_FILE:
+                throw new RuntimeException('No file sent.');
+            case UPLOAD_ERR_INI_SIZE:
+            case UPLOAD_ERR_FORM_SIZE:
+                throw new RuntimeException('Exceeded file size limit.');
+            default:
+                throw new RuntimeException('Unknown errors.');
+        }
+
+        if ($_FILES[$file]['size'] > 1000000) {
+            throw new RuntimeException('Exceeded file size limit.');
+        }
+
+        $info = new finfo(FILEINFO_MIME_TYPE);
+        if (false === $ext = array_search($info->file($_FILES[$file]['tmp_name']), $file_ext, true)) {
+            throw new RuntimeException('Invalid file format.');
+        }
+
+        $__file = sprintf("$storage_path%s.%s", sha1_file($_FILES[$file]['tmp_name']), $ext);
+        if (!move_uploaded_file($_FILES[$file]['tmp_name'], __DIR__ . $__file)) {
+            throw new RuntimeException('Failed to move uploaded file.');
+        }
+
+        return array('file' => $__file, 'msg' => 'File Upload Complete');
+    } catch (RuntimeException $e) {
+        return array('error' => $e->getMessage());
+    }
+}

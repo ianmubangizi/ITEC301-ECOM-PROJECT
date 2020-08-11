@@ -1,4 +1,4 @@
-<form method="post" action="<?php echo url_for('@products') ?>">
+<form method="post" action="<?php echo url_for('@products') ?>" enctype="multipart/form-data">
     <div class="form-group pb-2">
         <label class="font-weight-medium" for="product-name">Product name</label>
         <input class="form-control" type="text" id="product-name" name="product-name" max="120">
@@ -15,7 +15,7 @@
     </div>
     <div class="form-group py-2">
         <label class="font-weight-medium" for="product-details">Product description</label>
-        <textarea class="form-control" rows="6" id="product-details"></textarea>
+        <textarea class="form-control" rows="6" id="product-details" name="product-details"></textarea>
         <div class="bg-secondary p-3 font-size-ms rounded-bottom mt-n2">
             <span class="d-inline-block font-weight-medium mr-2 my-1">Markdown supported:</span>
             <em class="d-inline-block border-right pr-2 mr-2 my-1">*Italic*</em>
@@ -27,28 +27,28 @@
     </div>
     <div class="row">
         <div class="col-sm-6 form-group">
-            <label class="font-weight-medium" for="standard-price">Standard price</label>
+            <label class="font-weight-medium" for="product-price">Standard price</label>
             <div class="input-group">
                 <div class="input-group-prepend">
                                     <span class="input-group-text">
                                         <i class="czi-dollar"></i>
                                     </span>
                 </div>
-                <input class="form-control" type="text" id="standard-price" name="standard-price">
+                <input class="form-control" type="text" id="product-price" name="product-price">
             </div>
             <small class="form-text text-muted">
                 Price for this category is <?php echo CURRENCY['ZAR'] . get_categories()[0]->sale ?>
             </small>
         </div>
         <div class="col-sm-6 form-group">
-            <label class="font-weight-medium" for="sale-price">Sale price</label>
+            <label class="font-weight-medium" for="product-sale">Sale price</label>
             <div class="input-group">
                 <div class="input-group-prepend">
                                     <span class="input-group-text">
                                         <i class="czi-dollar"></i>
                                     </span>
                 </div>
-                <input class="form-control" type="text" id="sale-price" name="sale-price">
+                <input class="form-control" type="text" id="product-sale" name="product-sale">
             </div>
         </div>
     </div>
@@ -60,7 +60,10 @@
             be in lowercase and separated by commas.
         </small>
     </div>
-    <button class="btn btn-primary btn-block" type="submit" name="submit-product">
+    <label>
+        <input name="product-inventory" hidden type="text" id="product-inventory">
+    </label>
+    <button class="btn btn-primary btn-block" type="submit">
         <i class="czi-cloud-upload font-size-lg mr-2"></i>Save Product
     </button>
 </form>

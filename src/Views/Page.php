@@ -24,7 +24,7 @@ class Page
             view($page->view),
             view($page->view, 'views')
         );
-        require_once layouts('main');
+        require_once layouts('main', 'includes');
     }
 
     function crumb($name, $array)
