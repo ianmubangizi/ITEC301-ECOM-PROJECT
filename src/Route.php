@@ -48,6 +48,12 @@ class Route
             : self::$routes['GET']['/page-not-found'];
     }
 
+    public static function get_url($url, $method = false)
+    {
+        if (!$method) $method = strpos($url, '@') === 0 ? 'POST' : 'GET';
+        return isset(Route::$urls[$method][$url]) ? Route::$urls[$method][$url] : null;
+    }
+
     public static function to($page, $query = '')
     {
         header('Location: ' . url_for($page) . $query);
