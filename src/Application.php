@@ -5,14 +5,12 @@ namespace Mubangizi;
 use Braintree\Gateway;
 use Mubangizi\Layouts\Alert;
 use Mubangizi\Layouts\Toast;
-use Mubangizi\Models\Cart;
-use Mubangizi\Models\Product;
+use Mubangizi\Models\Basket;
 use Mubangizi\Views\Page;
 
 class Application
 {
 
-    public $cart;
     public $site;
     public $page;
     public $alert;
@@ -35,11 +33,17 @@ class Application
     protected function __construct()
     {
         session_start();
-        $this->cart = new Cart;
-        $this->site = $_ENV['SITE_NAME'];
+        $user = get_user();
         $this->alert = new Alert;
         $this->toast = new Toast;
         $this->router = new Route;
+        if ($user->id !== null & $user->role === CUSTOMER) {
+            $_SESSION['cart'] = Basket::get_customer_basket(get_user()->id);
+            $_SESSION['wishlist'] = Basket::get_customer_basket(get_user()->id, WISHLIST);
+        } else {
+            $_SESSION['cart'] = new Basket(null, CART, session_id());
+        }
+        $this->site = $_ENV['SITE_NAME'];
 
         $this->gateway = new Gateway([
             'environment' => $_ENV['BT_ENVIRONMENT'],
